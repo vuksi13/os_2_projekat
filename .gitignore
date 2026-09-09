@@ -3,3 +3,18 @@ __pycache__/
 .env
 .RData
 .Rhistory
+# Izvršni fajlovi za MinIO
+minio.exe
+mc.exe
+
+# Folderi sa podacima i MinIO sistemski fajlovi
+data/
+.minio.sys/
+
+# Folderi koje pravi Python benchmark skripta
+bench_source/
+bench_dest/
+
+# Python keš
+__pycache__/
+*.pyc

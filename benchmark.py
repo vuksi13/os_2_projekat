@@ -13,7 +13,6 @@ cilj = "bench_dest"
 os.makedirs(izvor, exist_ok=True)
 os.makedirs(cilj, exist_ok=True)
 
-# Definišemo mešovite scenarije: (broj_fajlova, velicina_po_fajlu_KB, naziv)
 scenariji = [
     (100, 10, "100x10KB"),
     (500, 10, "500x10KB"),
@@ -29,8 +28,6 @@ scenariji = [
 
 rezultati = []
 broj_iteracija = 10
-
-print("Pokrećem testiranje...")
 
 for it in range(1, broj_iteracija + 1):
     print(f"Iteracija {it}/{broj_iteracija}")

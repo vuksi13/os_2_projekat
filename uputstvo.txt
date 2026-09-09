@@ -1,0 +1,33 @@
+Da bi skripte iz ovog repozitorijuma radile, potrebno je preuzeti i pokrenuti MinIO server i klijent prateći sledeće korake u Windows PowerShell-u:
+
+1. Preuzimanje MinIO servera i klijenta
+Ove komande direktno preuzimaju zvanične izvršne fajlove u tvoj trenutni radni folder.
+
+PowerShell
+Invoke-WebRequest -Uri "https://dl.min.io/server/minio/release/windows-amd64/minio.exe" -OutFile "minio.exe"
+Invoke-WebRequest -Uri "https://dl.min.io/client/mc/release/windows-amd64/mc.exe" -OutFile "mc.exe"
+2. Pokretanje MinIO servera
+Podešavaju se administratorski kredencijali i server se pokreće na portu 9005 (API), dok je web konzola na portu 9001. Podaci se čuvaju u lokalnom folderu data. (Ovaj terminal ostaje otvoren).
+
+PowerShell
+$env:MINIO_ROOT_USER="minioadmin"
+$env:MINIO_ROOT_PASSWORD="minioadmin"
+.\minio.exe server .\data --address ":9005" --console-address ":9001"
+3. Povezivanje MinIO klijenta (mc)
+U novom terminalu, kreira se alias pod imenom lokalni kako bi MinIO klijent (mc.exe) mogao da komunicira sa našim serverom preko administratorskog naloga.
+
+PowerShell
+.\mc.exe alias set lokalni http://127.0.0.1:9005 minioadmin minioadmin
+4. Priprema skladišta (Bucket) i bezbednosnih polisa (IAM)
+Kreira se prostor (bucket) koji koriste Python skripte, zatim se dodaje test korisnik i dodeljuje mu se polisa koja dozvoljava samo čitanje (readonly), što je neophodno za test_bezbednosti.py.
+
+PowerShell
+# Kreiranje bucketa "projekat-os"
+.\mc.exe mb lokalni/projekat-os
+
+# Dodavanje korisnika "student" sa lozinkom "student123"
+.\mc.exe admin user add lokalni student student123
+
+# Dodeljivanje readonly prava korisniku "student"
+.\mc.exe admin policy attach lokalni readonly --user student
+Nakon izvršavanja ovih komandi, okruženje je potpuno konfigurisano i spremno za pokretanje Python skripti.
